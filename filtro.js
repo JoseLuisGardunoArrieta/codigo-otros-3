@@ -1,4 +1,4 @@
-// Tenemos un li de productos
+// Tenemos un lio de productos
 
 const productos = [
   {nombre: "Zapato negro", tipo: "zapato", color: "negro", img: "./taco-negro.jpg"},
@@ -8,56 +8,79 @@ const productos = [
   {nombre: "Zapato rojo", tipo: "zapato", color: "rojo", img: "./zapato-rojo.jpg"}
 ]
 
-const li = document.getElementsByName("lista-de-productos")
-const $i = document.querySelector('.input');
-
-for (let i = 0; i < productos.length; i++) {
-  var d = document.createElement("div")
-  d.classList.add("producto")
-
-  var ti = document.createElement("p")
-  ti.classList.add("titulo")
-  ti.textContent = productos[i].nombre
+const li = document.getElementById("lista-de-productos"); // cambio name por id y quito una s
+const $i = document.getElementById("input-filtrar"); // agrego id, cambio querySelector
+// falta la funcion para llamar a los productos, creo un forEach
+function displayProductos(productos) {
+  li.innerHTML = ""; 
   
-  var imagen = document.createElement("img");
-  imagen.setAttribute('src', productos[i].img);
+  productos.forEach(producto => {
+    const d = document.createElement("div");
+    d.classList.add("producto");
 
-  d.appendChild(ti)
-  d.appendChild(imagen)
+    const ti = document.createElement("p");
+    ti.classList.add("titulo");
+    ti.textContent = producto.nombre;
 
-  li.appendChild(d)
+    const imagen = document.createElement("img");
+    imagen.setAttribute('src', producto.img);
+
+    d.appendChild(ti);
+    d.appendChild(imagen);
+
+    li.appendChild(d);
+  });
 }
 
-displayProductos(productos)
-const botonDeFiltro = document.querySelector("button");
 
+// for (let i = 0; i < productos.length; i++) {
+//   var d = document.createElement("div")
+//   d.classList.add("producto")
+
+//   var ti = document.createElement("p")
+//   ti.classList.add("titulo")
+//   ti.textContent = productos[i].nombre
+  
+//   var imagen = document.createElement("img");
+//   imagen.setAttribute('src', productos[i].img);
+
+//   d.appendChild(ti)
+//   d.appendChild(imagen)
+
+//   li.appendChild(d) // no esta definido
+// }
+
+displayProductos(productos)  // invocando los productos en la pagina
+
+const botonDeFiltro = document.querySelector("button");
 botonDeFiltro.onclick = function() {
+  // Limpiar los productos actuales
   while (li.firstChild) {
     li.removeChild(li.firstChild);
   }
 
-  const texto = $i.value;
+  const texto = $i.value; 
   console.log(texto);
-  const productosFiltrados = filtrado(productos, texto );
+  const productosFiltrados = filtrado(productos, texto);  
 
   for (let i = 0; i < productosFiltrados.length; i++) {
-    var d = document.createElement("div")
-    d.classList.add("producto")
-  
-    var ti = document.createElement("p")
-    ti.classList.add("titulo")
-    ti.textContent = productosFiltrados[i].nombre
-    
+    var d = document.createElement("div"); 
+    d.classList.add("producto");
+
+    var ti = document.createElement("p");  
+    ti.classList.add("titulo");
+    ti.textContent = productosFiltrados[i].nombre;
+
     var imagen = document.createElement("img");
     imagen.setAttribute('src', productosFiltrados[i].img);
-  
-    d.appendChild(ti)
-    d.appendChild(imagen)
-  
-    li.appendChild(d)
+
+    d.appendChild(ti);
+    d.appendChild(imagen);
+
+    li.appendChild(d);
   }
 }
 
 const filtrado = (productos = [], texto) => {
   return productos.filter(item => item.tipo.includes(texto) || item.color.includes(texto));
-}  
+}
